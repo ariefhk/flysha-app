@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+enum SeatType {
+  ECONOMY
+  BUSINESS
+  FIRST
+}
+
+enum TicketStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String?
+  email     String    @unique
+  password  String
+  passport  String?   @unique
+  role      UserRole  @default(CUSTOMER)
+  tickets   Ticket[]
+  sessions  Session[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Airplane {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  imageUrl  String?
+  flights   Flight[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Flight {
+  id                 String       @id @default(cuid())
+  airplaneId         String
+  airplane           Airplane     @relation(fields: [airplaneId], references: [id])
+  departureDate      DateTime
+  departureCity      String
+  departureCityCode  String
+  arrivalDate        DateTime
+  destinationCity    String
+  destinatonCityCode String
+  price              Int
+  flightSeats        FlightSeat[]
+  tickets            Ticket[]
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model FlightSeat {
+  id         String   @id @default(cuid())
+  flightId   String
+  flight     Flight   @relation(fields: [flightId], references: [id])
+  seatNumber String
+  seatType   SeatType
+  isBooked   Boolean  @default(false)
+  ticket     Ticket?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Ticket {
+  id           String       @id @default(cuid())
+  code         String       @unique
+  flightId     String
+  flight       Flight       @relation(fields: [flightId], references: [id])
+  customerId   String
+  customer     User         @relation(fields: [customerId], references: [id])
+  seatId       String       @unique
+  seat         FlightSeat   @relation(fields: [seatId], references: [id])
+  bookingDate  DateTime
+  price        BigInt
+  status       TicketStatus @default(PENDING)
+  tokenMidrans String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
