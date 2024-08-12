@@ -10,4 +10,18 @@ export const Airplanes = {
       return [];
     }
   },
+
+  async findById(id: string) {
+    try {
+      const aiplane = await prisma.airplane.findUnique({
+        where: {
+          id,
+        },
+      });
+      return aiplane;
+    } catch (error) {
+      console.error("Database Error: ", error);
+      return null;
+    }
+  },
 };

@@ -31,3 +31,19 @@ export const getUploadFile = (filename: string) => {
 
   return data.publicUrl;
 };
+
+export const deleteFile = async (filename: string) => {
+  try {
+    const { data, error } = await supabase.storage.from("flysha-image").remove([`public/airplane/${filename}`]);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.log("ERROR SUPABASE: ", error);
+
+    return false;
+  }
+};

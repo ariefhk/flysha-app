@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import { getUploadFile } from "@/lib/supabase";
+import DeleteAirplaneButton from "./delete-airplane-button";
 
 export const airplaneColumns: ColumnDef<Airplane>[] = [
   {
@@ -43,11 +44,12 @@ export const airplaneColumns: ColumnDef<Airplane>[] = [
       return (
         <div className="inline-flex gap-5 items-center">
           <Button variant={"secondary"} size={"sm"} asChild>
-            <Link href={"/dashboard/airplane/edit/" + airplane.id}>
+            <Link href={"/dashboard/airplanes/edit/" + airplane.id}>
               <Pencil className="flex-shrink-0 mr-2 h-4 w-4" />
               Edit
             </Link>
           </Button>
+          <DeleteAirplaneButton id={airplane.id} />
         </div>
       );
     },
