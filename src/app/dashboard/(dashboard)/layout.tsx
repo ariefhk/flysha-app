@@ -1,9 +1,14 @@
-import { Button } from "../_components/ui/button";
+import { Button } from "../../_components/ui/button";
 import Link from "next/link";
-import { BookOpenCheck, LogOut, Plane, Ticket, User } from "lucide-react";
-import DashboardNavbar from "./_components/dashboard-navbar";
+import { BookOpenCheck, Plane, Ticket, User } from "lucide-react";
+import DashboardNavbar from "../_components/dashboard-navbar";
+import DashboardLogout from "../_components/dashboard-logout";
+import { checkAdmin } from "@/lib/auth";
 
-export default function DashboardLayout({ children }: Readonly<React.PropsWithChildren>) {
+export default async function DashboardLayout({ children }: Readonly<React.PropsWithChildren>) {
+  // check Admin Session
+  await checkAdmin();
+
   return (
     <main className="flex h-screen flex-col md:flex-row md:overflow-hidden">
       <DashboardNavbar />
@@ -37,9 +42,7 @@ export default function DashboardLayout({ children }: Readonly<React.PropsWithCh
           </Button>
         </div>
         <div className="space-y-2">
-          <Button variant={"destructive"} className="w-full justify-start">
-            <LogOut className="mr-2 w-4 h-4 flex-shrink-0" /> Logout
-          </Button>
+          <DashboardLogout />
         </div>
       </section>
       <section className="flex-grow md:overflow-y-auto p-5 md:pt-[80px]">{children}</section>

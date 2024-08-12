@@ -4,6 +4,7 @@ import { Lucia } from "lucia";
 import { UserRole } from "@prisma/client";
 import { cache } from "react";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
 
@@ -29,22 +30,33 @@ export const lucia = new Lucia(adapter, {
 
 export const getUser = cache(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-  if (!sessionId) return null;
-  const { user, session } = await lucia.validateSession(sessionId);
+  if (!sessionId) {
+    return { user: null, session: null };
+  }
+  const result = await lucia.validateSession(sessionId);
   try {
-    if (session && session.fresh) {
-      const sessionCookie = lucia.createSessionCookie(session.id);
+    if (result?.session && result?.session?.fresh) {
+      const sessionCookie = lucia.createSessionCookie(result.session.id);
       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
     }
-    if (!session) {
+    if (!result?.session) {
       const sessionCookie = lucia.createBlankSessionCookie();
       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
     }
   } catch {
     // Next.js throws error when attempting to set cookies when rendering page
   }
-  return user;
+  return result;
 });
+
+export const checkAdmin = async () => {
+  const { user, session } = await getUser();
+
+  if (!session || !user || user?.role !== "ADMIN") {
+    return redirect("/dashboard/signin");
+  }
+  return { user, session };
+};
 
 // IMPORTANT!
 declare module "lucia" {

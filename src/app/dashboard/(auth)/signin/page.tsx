@@ -1,11 +1,19 @@
 import { Metadata } from "next";
 import SignInForm from "./form";
+import { getUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Dashboard | Sign In",
 };
 
-export default function SignInPage() {
+export default async function SignInPage() {
+  const { user, session } = await getUser();
+
+  if (session && user?.role === "ADMIN") {
+    return redirect("/dashboard");
+  }
+
   return (
     <div className="w-full h-screen ">
       <div className="flex min-h-full flex-1  flex-col justify-center px-6 py-12 lg:px-8">
