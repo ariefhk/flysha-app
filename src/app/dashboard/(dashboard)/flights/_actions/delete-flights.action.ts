@@ -9,6 +9,7 @@ export async function deleteFlight(id: string) {
     await prisma.flight.delete({ where: { id: id } });
   } catch (error) {
     console.log(error);
+    throw new Error("Gagal menghapus data!");
   }
 
   revalidatePath("/dashboard/flights");

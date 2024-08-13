@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { inter } from "@/lib/font";
 import type { Metadata } from "next";
+import { Toaster } from "./_components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Flysha - Flight Booking App",
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         {children}
+        <Toaster />
       </body>
     </html>
   );
