@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 import { Flights } from "@/services/flights.service";
-import { flightColumns } from "./_components/flight-collumn";
+import { flightColumns } from "./_components/flight-collumns";
 
 export default async function DashboardFlightPage() {
   const flights = await Flights.getFlights();
