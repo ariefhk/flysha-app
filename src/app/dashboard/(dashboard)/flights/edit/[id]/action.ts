@@ -1,12 +1,17 @@
 "use server";
-
 import prisma from "@/lib/prisma";
-import { formFligtValidation } from "./validation";
-import { generateSeatPerClass } from "@/lib/generate-seat";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { formFligtValidation } from "../../create/validation";
 
-export const saveFligth = async (formData: FormData) => {
+export async function updateFlight(prevState: unknown, id: string | null, formData: FormData) {
+  if (!id) {
+    return {
+      status: "error",
+      message: "Flight Id wajib diisi!",
+    };
+  }
+
   const airplaneId = formData.get("airplaneId") as string;
   const price = formData.get("price") as string;
   const departureCity = formData.get("departureCity") as string;
@@ -45,7 +50,8 @@ export const saveFligth = async (formData: FormData) => {
     };
   }
 
-  const data = await prisma.flight.create({
+  await prisma.flight.update({
+    where: { id: id },
     data: {
       airplaneId,
       departureCity,
@@ -58,12 +64,6 @@ export const saveFligth = async (formData: FormData) => {
     },
   });
 
-  const seats = generateSeatPerClass(data.id);
-
-  await prisma.flightSeat.createMany({
-    data: seats,
-  });
-
   revalidatePath("/dashboard/flights");
   redirect("/dashboard/flights");
-};
+}

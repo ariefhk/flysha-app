@@ -9,6 +9,7 @@ import Image from "next/image";
 import { getUploadFile } from "@/lib/supabase";
 import FlightRouteColumn from "./flight-route-column";
 import SeatPriceCell from "./fligt-route-cell";
+import DeleteFlightButton from "./delete-flight-button";
 
 export type FlightColumn = Flight & {
   airplane: Airplane;
@@ -64,6 +65,7 @@ export const flightColumns: ColumnDef<FlightColumn>[] = [
               Edit
             </Link>
           </Button>
+          <DeleteFlightButton id={flight.id} />
           {/* <DeleteAirplane id={plane.id} /> */}
           {/* <DeleteFlight id={flight.id} /> */}
         </div>

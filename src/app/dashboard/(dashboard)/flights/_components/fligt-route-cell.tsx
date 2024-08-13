@@ -19,8 +19,6 @@ const SeatPriceCell: FC<SeatPriceCellProps> = ({ flight }) => {
     totalSeatFirst,
   } = useMemo(() => mappingSeats(flight.flightSeats), [flight]);
 
-  console.log(rupiahFormat(flight.price + 500000));
-
   return (
     <div className="space-y-2">
       <div className="space-y-0.5">
