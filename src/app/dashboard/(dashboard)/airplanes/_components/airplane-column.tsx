@@ -37,7 +37,7 @@ export const airplaneColumns: ColumnDef<Airplane>[] = [
   },
   {
     id: "actions",
-    header: "Actions",
+    header: "Aksi",
     cell: ({ row }) => {
       const airplane = row.original;
 
