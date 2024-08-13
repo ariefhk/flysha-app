@@ -1,18 +1,17 @@
-import { Button } from "@/app/_components/ui/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
 import React from "react";
+import { Ticket } from "@/services/ticket.service";
+import { DataTable } from "@/app/_components/datatable";
+import { ticketColumns } from "./_components/tickets-columns";
 
-export default function DashboardTicketsPage() {
+export default async function DashboardTicketsPage() {
+  const tickets = await Ticket.getAllTickets();
+
   return (
-    <div className="flex flex-row items-center justify-between">
-      <div className="py-5 text-2xl font-bold">Tickets</div>
-      <Button asChild>
-        <Link href="/dashboard/tickets/create">
-          <Plus className="flex-shrink-0 mr-2 h-4 w-4" />
-          Add Data
-        </Link>
-      </Button>
-    </div>
+    <>
+      <div className="flex flex-row items-center justify-between">
+        <div className="py-5 text-2xl font-bold">Tickets</div>
+      </div>
+      <DataTable columns={ticketColumns} data={tickets} />
+    </>
   );
 }

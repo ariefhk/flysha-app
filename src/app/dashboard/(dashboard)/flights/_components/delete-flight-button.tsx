@@ -17,7 +17,7 @@ export default function DeleteFlightButton({ id }: Readonly<DeleteFlightButtonPr
   async function handleDeleteFlight(id: string) {
     startTransition(async () => {
       try {
-        await deleteFlight("sss");
+        await deleteFlight(id);
         toast({
           title: "Berhasil menghapus pesawat!",
           description: "Selamat, Anda berhasil menghapus pesawat!",
