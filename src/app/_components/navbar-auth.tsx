@@ -19,7 +19,7 @@ export default async function NavbarAuth() {
         </Link>
       ) : (
         <Link
-          href="/sign-in"
+          href="/signin"
           className="font-bold text-white bg-flysha-light-purple rounded-full p-[12px_30px] transition-all duration-300 hover:shadow-[0_10px_20px_0_#B88DFF]"
         >
           Sign In

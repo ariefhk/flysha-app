@@ -109,7 +109,7 @@ export default function FormSignUp() {
         <div className="bg-rose-300 text-sm text-center rounded-lg h-10 px-4 py-2 text-rose-700">{state.message}</div>
       ) : null}
       <Link
-        href="/sign-in"
+        href="/signin"
         className="text-center text-flysha-black hover:text-white rounded-full bg-white hover:bg-flysha-black font-semibold w-full p-[12px_30px] border border-flysha-black transition-all duration-300"
       >
         Sign In
